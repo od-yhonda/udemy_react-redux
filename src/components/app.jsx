@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 // import Greeting from './greeting';
 import SearchForm from './SearchForm';
+import GeoCodeResult from './GeoCodeResult';
 
 class App extends Component {
   // static handlePlaceSubmit(place) {
@@ -18,10 +19,19 @@ class App extends Component {
   }
 
   render() {
+    const { state } = this.state;
+
     return (
       <div>
         <h1>緯度経度検索</h1>
-        <SearchForm onSubmit={place => this.handlePlaceSubmit(place)} />
+        <SearchForm
+          onSubmit={place => this.handlePlaceSubmit(place)}
+        />
+        <GeoCodeResult
+          address={{ state }.address}
+          lat={{ state }.lat}
+          lng={{ state }.lng}
+        />
       </div>
     );
   }
