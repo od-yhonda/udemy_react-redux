@@ -1,5 +1,5 @@
 const path = require('path');
-// const ExtractTextPlugin = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const publicDir = path.join(__dirname, '/public');
 
@@ -13,7 +13,7 @@ module.exports = [{
     filename: 'bundle.js',
   },
   module: {
-    // webpack8系からloader -> rules
+    // webpack4系からloaders -> rules
     rules: [{
       // 最新をインストールするためにbabel-core -> @babel/core
       // babel-loader8系をならcore7系以上じゃないといけない
@@ -33,30 +33,39 @@ module.exports = [{
     historyApiFallback: true,
     contentBase: publicDir,
   },
+  // mode を追加するよう警告が出るようになった
+  // https://webpack.js.org/configuration/mode/
+  mode: 'none',
 },
-// {
-//   entry: {
-//     style: './stylesheets/index.scss',
-//   },
-//   output: {
-//     path: publicDir,
-//     publicPath: '/',
-//     filename: 'bundle.css',
-//   },
-//   module: {
-//     loaders: [
-//       {
-//         test: /\.css$/,
-//         loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }),
-//       },
-//       {
-//         test: /\.scss$/,
-//         loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!sass-loader' }),
-//       },
-//     ],
-//   },
-//   plugins: [
-//     new ExtractTextPlugin('bundle.css'),
-//   ],
-// },
+{
+  entry: {
+    style: './stylesheets/index.scss',
+  },
+  output: {
+    path: publicDir,
+    publicPath: '/',
+    filename: 'bundle.css',
+  },
+  module: {
+    // webpack4系からloaders -> rules
+    rules: [
+      {
+        test: /\.css$/,
+        // use: [{loader: MiniCssExtractPlugin.loader, 'style-loader', 'css-loader'}, {}],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        test: /\.scss$/,
+        // use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin('bundle.css'),
+  ],
+  // mode を追加するよう警告が出るようになった
+  // https://webpack.js.org/configuration/mode/
+  mode: 'none',
+},
 ];
