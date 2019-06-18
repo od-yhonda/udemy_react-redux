@@ -1,4 +1,10 @@
 body {
   background-color: #eee;
-  text-align: center; }
+  text-align: center;
+  color: #444; }
+
+.geoCode-result {
+  widows: 400px;
+  margin: 0 auto;
+  text-align: left; }
 
