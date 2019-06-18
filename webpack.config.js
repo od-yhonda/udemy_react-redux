@@ -51,11 +51,13 @@ module.exports = [{
     rules: [
       {
         test: /\.css$/,
-        // use: [{loader: MiniCssExtractPlugin.loader, 'style-loader', 'css-loader'}, {}],
+        // 'style-loader'が使えなくなった？
+        // use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader'],
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.scss$/,
+        // 'style-loader'が使えなくなった？
         // use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader', 'sass-loader'],
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },

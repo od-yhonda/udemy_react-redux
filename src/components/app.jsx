@@ -25,6 +25,7 @@ class App extends Component {
   handlePlaceSubmit(place) {
     axios.get(GEOCODE_ENDPOINT, { params: { address: place, key: GOOGLE_MAP_API_KEY } })
       .then((response) => {
+        // eslint-disable-next-line no-console
         console.log(response);
         const { data } = response;
         const [result] = data.results;
@@ -49,6 +50,7 @@ class App extends Component {
           }
         }
       }).catch((reason) => {
+        // eslint-disable-next-line no-console
         console.log(reason);
         this.setErrorMessage('通信に失敗しました。');
       });
