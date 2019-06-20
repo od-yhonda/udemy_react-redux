@@ -1,45 +1,38 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 // import Greeting from './greeting';
 import SearchForm from './SearchForm';
 import GeoCodeResult from './GeoCodeResult';
 import Map from './Map';
-
-const GEOCODE_ENDPOINT = 'https://maps.googleapis.com/maps/api/geocode/json';
-const GOOGLE_MAP_API_KEY = '';
+import { geocode } from '../domain/Geocoder';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      location: {
+        lat: 35.6585805,
+        lng: 139.7454329,
+      },
+    };
   }
 
   setErrorMessage(message) {
     this.setState({
       address: message,
-      lat: 0,
-      lng: 0,
+      location: {
+        lat: 0,
+        lng: 0,
+      },
     });
   }
 
   handlePlaceSubmit(place) {
-    axios.get(GEOCODE_ENDPOINT, { params: { address: place, key: GOOGLE_MAP_API_KEY } })
-      .then((response) => {
-        // eslint-disable-next-line no-console
-        console.log(response);
-        const { data } = response;
-        const [result] = data.results;
-
-        switch (data.status) {
+    geocode(place)
+      .then(({ status, address, location }) => {
+        switch (status) {
           case 'OK': {
-            const { location } = result.geometry;
-
-            this.setState({
-              address: result.formatted_address,
-              lat: location.lat,
-              lng: location.lng,
-            });
+            this.setState({ address, location });
             break;
           }
           case 'ZERO_RESULTS': {
@@ -58,20 +51,16 @@ class App extends Component {
   }
 
   render() {
-    const { address, lat, lng } = this.state;
+    const { address, location } = this.state;
 
     return (
-      <div>
-        <h1>緯度経度検索</h1>
-        <SearchForm
-          onSubmit={place => this.handlePlaceSubmit(place)}
-        />
-        <GeoCodeResult
-          address={address}
-          lat={lat}
-          lng={lng}
-        />
-        <Map lat={lat} lng={lng} />
+      <div className="app">
+        <h1 className="app-title">ホテル検索</h1>
+        <SearchForm onSubmit={place => this.handlePlaceSubmit(place)} />
+        <div className="result-area">
+          <Map location={location} />
+          <GeoCodeResult address={address} location={location} />
+        </div>
       </div>
     );
   }

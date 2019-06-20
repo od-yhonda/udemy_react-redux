@@ -2,4 +2,5 @@ node_modules
 public/bundle.js
 public/bundle.css
 public/style.css
+public/style.js
 yarn-error.log

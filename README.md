@@ -14,3 +14,13 @@ yarn add -D eslint eslint-plugin-react
 yarn add react react-dom
 
 yarn add prop-types
+
+
+
+yarn add -D node-sass style-loader css-loader import-glob-loader
+yarn add -D mini-css-extract-plugin
+yarn add -D sass-loader
+
+yarn add -D axios
+
+yarn add -D react-google-maps

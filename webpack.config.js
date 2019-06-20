@@ -21,7 +21,7 @@ module.exports = [{
       loader: 'babel-loader',
       query: {
         // 最新バージョンをインストールするために変更
-        // envはes2015、2016、2017など全部入り。@babel/preset-es2015でインストールでも可。
+        // @babel/preset-envはes2015、2016、2017など全部入り。@babel/preset-es2015でインストールでも可。
         presets: ['@babel/preset-react', '@babel/preset-env'],
       },
     }],
@@ -35,41 +35,49 @@ module.exports = [{
   },
   // mode を追加するよう警告が出るようになった
   // https://webpack.js.org/configuration/mode/
-  mode: 'none',
+  // development|production|none
+  mode: 'development',
 },
 {
   entry: {
     style: './stylesheets/index.scss',
   },
+  // new MiniCssExtractPluginを行うだけでいいっぽい。
+  // bundle.css に想定と違う log?っぽいのが出力されて、cssとして読み込めない。
+  // かつ new MiniCssExtractPluginの出力内容とコンフリクトする。
   output: {
     path: publicDir,
-    publicPath: '/',
-    filename: 'bundle.css',
+    // publicPath: '/',
+    // filename: 'bundle.css',
   },
   module: {
     // webpack4系からloaders -> rules
     rules: [
       {
         test: /\.css$/,
-        // 'style-loader'が使えなくなった？
+        // MiniCssExtractPluginを使う場合、'style-loader'は必要ないっぽい
         // use: ['style-loader', 'css-loader', 'sass-loader'],
-        // use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader'],
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.scss$/,
-        // 'style-loader'が使えなくなった？
+        // MiniCssExtractPluginを使う場合、'style-loader'は必要ないっぽい
         // use: ['style-loader', 'css-loader', 'sass-loader'],
-        // use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader', 'sass-loader'],
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin('bundle.css'),
+    // そのまま を new MiniCssExtractPlugin()に変更しただけだと指定のファイル名で出力できない
+    // { filename: 'bundle.css' } のオプションを設定する。
+    // new MiniCssExtractPlugin('bundle.css'),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
   ],
   // mode を追加するよう警告が出るようになった
   // https://webpack.js.org/configuration/mode/
-  mode: 'none',
+  // development|production|none
+  mode: 'development',
 },
 ];
