@@ -5,6 +5,7 @@ import SearchForm from './SearchForm';
 import GeoCodeResult from './GeoCodeResult';
 import Map from './Map';
 import { geocode } from '../domain/Geocoder';
+import HotelsTable from './HotelsTable';
 
 class App extends Component {
   constructor(props) {
@@ -14,6 +15,10 @@ class App extends Component {
         lat: 35.6585805,
         lng: 139.7454329,
       },
+      hotels: [
+        { id: 111, name: 'ホテルオークラ', url: 'https://google.com' },
+        { id: 222, name: 'アパホテル', url: 'https://yahoo.co.jp' },
+      ],
     };
   }
 
@@ -51,7 +56,7 @@ class App extends Component {
   }
 
   render() {
-    const { address, location } = this.state;
+    const { address, location, hotels } = this.state;
 
     return (
       <div className="app">
@@ -59,7 +64,11 @@ class App extends Component {
         <SearchForm onSubmit={place => this.handlePlaceSubmit(place)} />
         <div className="result-area">
           <Map location={location} />
-          <GeoCodeResult address={address} location={location} />
+          <div className="result-right">
+            <GeoCodeResult address={address} location={location} />
+            <h2>ホテル検索結果</h2>
+            <HotelsTable hotels={hotels} />
+          </div>
         </div>
       </div>
     );
