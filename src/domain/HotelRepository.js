@@ -39,7 +39,7 @@ export const searchHotelByLocation = (location) => {
         name: hotelName,
         url: hotelInformationUrl,
         thumbUrl: hotelThumbnailUrl,
-        price: hotelMinCharge ? `${hotelMinCharge}円` : '空室なし',
+        price: hotelMinCharge,
         reviewAverage,
         reviewCount,
         distance,

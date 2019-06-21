@@ -1,26 +1,41 @@
 # udemy_react-redux
 
+yarn add -D babel-loader
+yarn add -D @babel/core
+yarn add -D @babel/preset-env or @babel/preset-es2015
 
-yarn add webpack  babel-core babel-loader babel-preset-react babel-preset-es2015
+yarn add -D @babel/preset-react
+yarn add -D webpack
+yarn add -D webpack-dev-server
+yarn add -D webpack-cli
 
-yarn add -D babel-loader @babel/core @babel/preset-env @babel/preset-react webpack webpack-dev-server webpack-cli
+yarn add -D eslint
+https://eslint.org
+yarn add -D eslint-plugin-react
+https://github.com/yannickcr/eslint-plugin-react
 
-npm install --save-dev @babel/preset-es2015
-
-yarn add -D eslint eslint-plugin-react
-
-yarn add react react-dom
+yarn add react
+yarn add react-dom
 
 yarn add prop-types
 
 
 
-yarn add -D node-sass style-loader css-loader import-glob-loader
+yarn add -D node-sass
+yarn add -D css-loader
+yarn add -D import-glob-loader
+yarn add -D style-loader
 yarn add -D mini-css-extract-plugin
 yarn add -D sass-loader
 
 yarn add axios
+https://github.com/axios/axios
 
 yarn add react-google-maps
 
 yarn add geolib
+https://github.com/manuelbieh/geolib
+
+yarn add lodash
+https://github.com/lodash/lodash
+

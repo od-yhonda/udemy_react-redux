@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 
 // import Greeting from './greeting';
 import SearchForm from './SearchForm';
@@ -9,6 +10,8 @@ import HotelsTable from './HotelsTable';
 import { geocode } from '../domain/Geocoder';
 import { searchHotelByLocation } from '../domain/HotelRepository';
 
+const sortedHotels = (hotels, sortKey) => _.sortBy(hotels, h => h[sortKey]);
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +20,7 @@ class App extends Component {
         lat: 35.6585805,
         lng: 139.7454329,
       },
+      sortKey: 'price',
     };
   }
 
@@ -49,7 +53,8 @@ class App extends Component {
         return [];
       })
       .then((hotels) => {
-        this.setState({ hotels });
+        const { sortKey } = this.state;
+        this.setState({ hotels: sortedHotels(hotels, sortKey) });
       })
       .catch((reason) => {
         // eslint-disable-next-line no-console
@@ -58,8 +63,17 @@ class App extends Component {
       });
   }
 
+  handleSortKeyChange(hotels, sortKey) {
+    this.setState({ sortKey, hotels: sortedHotels(hotels, sortKey) });
+  }
+
   render() {
-    const { address, location, hotels } = this.state;
+    const {
+      address,
+      location,
+      hotels,
+      sortKey,
+    } = this.state;
 
     return (
       <div className="app">
@@ -70,7 +84,11 @@ class App extends Component {
           <div className="result-right">
             <GeoCodeResult address={address} location={location} />
             <h2>ホテル検索結果</h2>
-            <HotelsTable hotels={hotels} />
+            <HotelsTable
+              hotels={hotels}
+              sortKey={sortKey}
+              onSort={key => this.handleSortKeyChange(hotels, key)}
+            />
           </div>
         </div>
       </div>
