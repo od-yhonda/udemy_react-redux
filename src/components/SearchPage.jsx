@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+// { PropTypes }は 'prop-types' を追加しないと使えない
+import { PropTypes } from 'prop-types';
 
 // import Greeting from './greeting';
 import SearchForm from './SearchForm';
@@ -37,6 +39,9 @@ class SearchPage extends Component {
   }
 
   handlePlaceSubmit(place) {
+    const { history } = this.props;
+    history.push(`/?query=${place}`);
+
     geocode(place)
       .then(({ status, address, location }) => {
         switch (status) {
@@ -100,5 +105,9 @@ class SearchPage extends Component {
     );
   }
 }
+
+SearchPage.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+};
 
 export default SearchPage;
