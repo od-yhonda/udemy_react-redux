@@ -14,6 +14,8 @@ const sortedHotels = (hotels, sortKey) => _.sortBy(hotels, h => h[sortKey]);
 
 class App extends Component {
   constructor(props) {
+    // eslint-disable-next-line no-console
+    console.log('call：constructor');
     super(props);
     this.state = {
       location: {
@@ -22,6 +24,42 @@ class App extends Component {
       },
       sortKey: 'price',
     };
+  }
+
+  componentWillMount() {
+    // eslint-disable-next-line no-console
+    console.log('call：componentWillMount');
+  }
+
+  componentDidMount() {
+    // eslint-disable-next-line no-console
+    console.log('call：componentDidMount');
+  }
+
+  componentWillReceiveProps() {
+    // eslint-disable-next-line no-console
+    console.log('call：componentWillReceiveProps');
+  }
+
+  shouldComponentUpdate() {
+    // eslint-disable-next-line no-console
+    console.log('call：shouldComponentUpdate');
+    return true;
+  }
+
+  componentWillUpdate() {
+    // eslint-disable-next-line no-console
+    console.log('call：componentWillUpdate');
+  }
+
+  componentDidUpdate() {
+    // eslint-disable-next-line no-console
+    console.log('call：componentDidUpdate');
+  }
+
+  componentWillUnmount() {
+    // eslint-disable-next-line no-console
+    console.log('call：componentWillUnmount');
   }
 
   setErrorMessage(message) {
@@ -68,6 +106,9 @@ class App extends Component {
   }
 
   render() {
+    // eslint-disable-next-line no-console
+    console.log('call：render');
+
     const {
       address,
       location,
