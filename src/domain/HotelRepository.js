@@ -1,3 +1,8 @@
+// import geolib from 'geolib'; だと「geolib」で読み込んでくれない。
+// import { getDistance } from 'geolib'; か 「geolib」で使いたいなら下記のimport
+// 詳しくはhttps://github.com/manuelbieh/geolib
+import * as geolib from 'geolib';
+
 import Rakuten from '../lib/Rakuten';
 
 const RAKUTEN_APP_ID = '';
@@ -12,11 +17,32 @@ export const searchHotelByLocation = (location) => {
   };
   return Rakuten.Travel.simpleHotelSearch(params)
     .then(response => response.data.hotels.map((info) => {
-      const { hotelNo, hotelName, hotelInformationUrl } = info.hotel[0].hotelBasicInfo;
+      const {
+        hotelNo,
+        hotelName,
+        hotelInformationUrl,
+        hotelThumbnailUrl,
+        hotelMinCharge,
+        reviewAverage,
+        reviewCount,
+        latitude,
+        longitude,
+      } = info.hotel[0].hotelBasicInfo;
+
+      const distance = geolib.getDistance(
+        { latitude: location.lat, longitude: location.lng },
+        { latitude, longitude },
+      );
+
       return {
         id: hotelNo,
         name: hotelName,
         url: hotelInformationUrl,
+        thumbUrl: hotelThumbnailUrl,
+        price: hotelMinCharge ? `${hotelMinCharge}円` : '空室なし',
+        reviewAverage,
+        reviewCount,
+        distance,
       };
     }));
 };
