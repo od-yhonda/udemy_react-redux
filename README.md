@@ -39,3 +39,4 @@ https://github.com/manuelbieh/geolib
 yarn add lodash
 https://github.com/lodash/lodash
 
+yarn add react-router-dom
