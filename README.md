@@ -40,3 +40,6 @@ yarn add lodash
 https://github.com/lodash/lodash
 
 yarn add react-router-dom
+
+yarn add query-string
+https://github.com/sindresorhus/query-string#readme

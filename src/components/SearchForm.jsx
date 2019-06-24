@@ -1,44 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
 // { PropTypes }は 'prop-types' を追加しないと使えない
 import { PropTypes } from 'prop-types';
 
-class SearchForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      place: '東京タワー',
-    };
-  }
+// const SearchForm = ({ place, onSubmit, onPlaceChange }) => (
+//   <form className="search-form" onSubmit={() => onSubmit()}>
+//     <input
+//       className="place-input"
+//       type="text"
+//       size="30"
+//       value={place}
+//       onChange={e => onPlaceChange(e.target.value)}
+//     />
+//     <input className="submit-button" type="submit" value="検索" />
+//   </form>
+// );
 
-  handlePlaceChange(place) {
-    this.setState({ place });
-  }
+const SearchForm = (props) => {
+  const { place, onSubmit, onPlaceChange } = props;
 
-  handleSubmit(e) {
-    const { onSubmit } = this.props;
-    const { place } = this.state;
-    e.preventDefault();
-    onSubmit(place);
-  }
-
-  render() {
-    const { place } = this.state;
-
-    return (
-      <form className="search-form" onSubmit={e => this.handleSubmit(e)}>
-        <input
-          className="place-input"
-          type="text" size="30"
-          value={place}
-          onChange={e => this.handlePlaceChange(e.target.value)}
-        />
-        <input className="submit-button" type="submit" value="検索" />
-      </form>
-    );
-  }
-}
+  return (
+    <form className="search-form" onSubmit={e => onSubmit(e)}>
+      <input
+        className="place-input"
+        type="text"
+        size="30"
+        value={place}
+        onChange={e => onPlaceChange(e.target.value)}
+      />
+      <input className="submit-button" type="submit" value="検索" />
+    </form>
+  );
+};
 
 SearchForm.propTypes = {
+  place: PropTypes.string.isRequired,
+  onPlaceChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
 
