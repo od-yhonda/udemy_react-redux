@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 import queryString from 'query-string';
 
 // import Greeting from './greeting';
-import SearchForm from './SearchForm';
+import SearchForm from '../containers/SearchForm';
 // import GeoCodeResult from './GeoCodeResult';
 // import Map from './Map';
 // import HotelsTable from './HotelsTable';
@@ -17,9 +17,8 @@ const sortedHotels = (hotels, sortKey) => _.sortBy(hotels, h => h[sortKey]);
 
 class SearchPage extends Component {
   constructor(props) {
-    // eslint-disable-next-line no-console
-    console.log('call：constructor');
     super(props);
+
     this.state = {
       place: this.getPlaceParam() || '東京タワー',
       location: {
@@ -31,11 +30,11 @@ class SearchPage extends Component {
   }
 
   componentDidMount() {
-    const { store } = this.props;
+    // const { store } = this.props;
 
-    this.unsubscribe = store.subscribe(() => {
-      this.forceUpdate();
-    });
+    // this.unsubscribe = store.subscribe(() => {
+    //   this.forceUpdate();
+    // });
     // const place = this.getPlaceParam();
 
     // if (place) {
@@ -44,7 +43,7 @@ class SearchPage extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    // this.unsubscribe();
   }
 
   getPlaceParam() {
@@ -77,12 +76,12 @@ class SearchPage extends Component {
     this.startSearch();
   }
 
-  handlePlaceChange(e) {
-    const { store } = this.props;
-    e.preventDefault();
-    store.dispatch({ type: 'CHANGE_PLACE', place: e.target.value });
-    // this.setState({ place });
-  }
+  // handlePlaceChange(e) {
+  //   const { onPlaceChange } = this.props;
+  //   e.preventDefault();
+  //   onPlaceChange(e.target.value);
+  //   // this.setState({ place });
+  // }
 
   handleSortKeyChange(hotels, sortKey) {
     this.setState({ sortKey, hotels: sortedHotels(hotels, sortKey) });
@@ -121,7 +120,7 @@ class SearchPage extends Component {
 
   render() {
     // eslint-disable-next-line no-console
-    console.log('call：render');
+    console.log(this.props);
 
     // const {
     //   address,
@@ -131,17 +130,12 @@ class SearchPage extends Component {
     //   place,
     // } = this.state;
 
-    const { store } = this.props;
-    const state = store.getState();
+    // const { place } = this.props;
 
     return (
       <div className="search-page">
         <h1 className="app-title">ホテル検索</h1>
-        <SearchForm
-          place={state.place}
-          onSubmit={e => this.handlePlaceSubmit(e)}
-          onPlaceChange={e => this.handlePlaceChange(e)}
-        />
+        <SearchForm onSubmit={e => this.handlePlaceSubmit(e)} />
         {/*
         <div className="result-area">
           <Map location={location} />
@@ -164,11 +158,6 @@ class SearchPage extends Component {
 SearchPage.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  store: PropTypes.shape({
-    subscribe: PropTypes.func,
-    getState: PropTypes.func,
-    dispatch: PropTypes.func,
-  }).isRequired,
 };
 
 export default SearchPage;
