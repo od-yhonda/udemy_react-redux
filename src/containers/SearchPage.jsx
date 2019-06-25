@@ -31,11 +31,20 @@ class SearchPage extends Component {
   }
 
   componentDidMount() {
-    const place = this.getPlaceParam();
+    const { store } = this.props;
 
-    if (place) {
-      this.startSearch();
-    }
+    this.unsubscribe = store.subscribe(() => {
+      this.forceUpdate();
+    });
+    // const place = this.getPlaceParam();
+
+    // if (place) {
+    //   this.startSearch();
+    // }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   getPlaceParam() {
@@ -69,9 +78,9 @@ class SearchPage extends Component {
   }
 
   handlePlaceChange(e) {
-    const { onPlaceChange } = this.props;
+    const { store } = this.props;
     e.preventDefault();
-    onPlaceChange(e.target.value);
+    store.dispatch({ type: 'CHANGE_PLACE', place: e.target.value });
     // this.setState({ place });
   }
 
@@ -122,13 +131,14 @@ class SearchPage extends Component {
     //   place,
     // } = this.state;
 
-    const { place } = this.props;
+    const { store } = this.props;
+    const state = store.getState();
 
     return (
       <div className="search-page">
         <h1 className="app-title">ホテル検索</h1>
         <SearchForm
-          place={place}
+          place={state.place}
           onSubmit={e => this.handlePlaceSubmit(e)}
           onPlaceChange={e => this.handlePlaceChange(e)}
         />
@@ -154,8 +164,11 @@ class SearchPage extends Component {
 SearchPage.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  onPlaceChange: PropTypes.func.isRequired,
-  place: PropTypes.string.isRequired,
+  store: PropTypes.shape({
+    subscribe: PropTypes.func,
+    getState: PropTypes.func,
+    dispatch: PropTypes.func,
+  }).isRequired,
 };
 
 export default SearchPage;
