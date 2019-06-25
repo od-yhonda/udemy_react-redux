@@ -43,3 +43,12 @@ yarn add react-router-dom
 
 yarn add query-string
 https://github.com/sindresorhus/query-string#readme
+
+yarn add redux
+https://redux.js.org
+https://github.com/reduxjs/redux
+
+yarn add react-redux
+https://github.com/reduxjs/react-redux
+
+yarn add redux-devtools

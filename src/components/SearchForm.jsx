@@ -25,7 +25,7 @@ const SearchForm = (props) => {
         type="text"
         size="30"
         value={place}
-        onChange={e => onPlaceChange(e.target.value)}
+        onChange={e => onPlaceChange(e)}
       />
       <input className="submit-button" type="submit" value="検索" />
     </form>

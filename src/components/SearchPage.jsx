@@ -6,9 +6,9 @@ import queryString from 'query-string';
 
 // import Greeting from './greeting';
 import SearchForm from './SearchForm';
-import GeoCodeResult from './GeoCodeResult';
-import Map from './Map';
-import HotelsTable from './HotelsTable';
+// import GeoCodeResult from './GeoCodeResult';
+// import Map from './Map';
+// import HotelsTable from './HotelsTable';
 
 import { geocode } from '../domain/Geocoder';
 import { searchHotelByLocation } from '../domain/HotelRepository';
@@ -68,8 +68,11 @@ class SearchPage extends Component {
     this.startSearch();
   }
 
-  handlePlaceChange(place) {
-    this.setState({ place });
+  handlePlaceChange(e) {
+    const { onPlaceChange } = this.props;
+    e.preventDefault();
+    onPlaceChange(e.target.value);
+    // this.setState({ place });
   }
 
   handleSortKeyChange(hotels, sortKey) {
@@ -111,13 +114,15 @@ class SearchPage extends Component {
     // eslint-disable-next-line no-console
     console.log('call：render');
 
-    const {
-      address,
-      location,
-      hotels,
-      sortKey,
-      place,
-    } = this.state;
+    // const {
+    //   address,
+    //   location,
+    //   hotels,
+    //   sortKey,
+    //   place,
+    // } = this.state;
+
+    const { place } = this.props;
 
     return (
       <div className="search-page">
@@ -125,8 +130,9 @@ class SearchPage extends Component {
         <SearchForm
           place={place}
           onSubmit={e => this.handlePlaceSubmit(e)}
-          onPlaceChange={p => this.handlePlaceChange(p)}
+          onPlaceChange={e => this.handlePlaceChange(e)}
         />
+        {/*
         <div className="result-area">
           <Map location={location} />
           <div className="result-right">
@@ -139,6 +145,7 @@ class SearchPage extends Component {
             />
           </div>
         </div>
+        */}
       </div>
     );
   }
@@ -147,6 +154,8 @@ class SearchPage extends Component {
 SearchPage.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  onPlaceChange: PropTypes.func.isRequired,
+  place: PropTypes.string.isRequired,
 };
 
 export default SearchPage;
