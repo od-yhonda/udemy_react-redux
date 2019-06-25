@@ -51,4 +51,5 @@ https://github.com/reduxjs/redux
 yarn add react-redux
 https://github.com/reduxjs/react-redux
 
-yarn add redux-devtools
+yarn add -D redux-devtools
+https://github.com/reduxjs/redux-devtools
