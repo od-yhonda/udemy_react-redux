@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 // { PropTypes }は 'prop-types' を追加しないと使えない
 import { PropTypes } from 'prop-types';
@@ -6,12 +7,9 @@ import queryString from 'query-string';
 
 // import Greeting from './greeting';
 import SearchForm from '../containers/SearchForm';
-// import GeoCodeResult from './GeoCodeResult';
-// import Map from './Map';
+import GeoCodeResult from './GeoCodeResult';
+import Map from './Map';
 // import HotelsTable from './HotelsTable';
-
-import { geocode } from '../domain/Geocoder';
-import { searchHotelByLocation } from '../domain/HotelRepository';
 
 const sortedHotels = (hotels, sortKey) => _.sortBy(hotels, h => h[sortKey]);
 
@@ -20,11 +18,11 @@ class SearchPage extends Component {
     super(props);
 
     this.state = {
-      place: this.getPlaceParam() || '東京タワー',
-      location: {
-        lat: 35.6585805,
-        lng: 139.7454329,
-      },
+      // place: this.getPlaceParam() || '東京タワー',
+      // location: {
+      //   lat: 35.6585805,
+      //   lng: 139.7454329,
+      // },
       sortKey: 'price',
     };
   }
@@ -67,14 +65,14 @@ class SearchPage extends Component {
     });
   }
 
-  handlePlaceSubmit(e) {
-    e.preventDefault();
-    const { history } = this.props;
-    const { place } = this.state;
-    history.push(`/?place=${place}`);
+  // handlePlaceSubmit(e) {
+  //   e.preventDefault();
+  //   const { history } = this.props;
+  //   const { place } = this.state;
+  //   history.push(`/?place=${place}`);
 
-    this.startSearch();
-  }
+  //   this.startSearch();
+  // }
 
   // handlePlaceChange(e) {
   //   const { onPlaceChange } = this.props;
@@ -87,40 +85,11 @@ class SearchPage extends Component {
     this.setState({ sortKey, hotels: sortedHotels(hotels, sortKey) });
   }
 
-  startSearch() {
-    const { place } = this.state;
-
-    geocode(place)
-      .then(({ status, address, location }) => {
-        switch (status) {
-          case 'OK': {
-            this.setState({ address, location });
-            return searchHotelByLocation(location);
-          }
-          case 'ZERO_RESULTS': {
-            this.setErrorMessage('結果が見つかりませんでした。');
-            break;
-          }
-          default: {
-            this.setErrorMessage('エラーが発生しました。');
-          }
-        }
-        return [];
-      })
-      .then((hotels) => {
-        const { sortKey } = this.state;
-        this.setState({ hotels: sortedHotels(hotels, sortKey) });
-      })
-      .catch((reason) => {
-        // eslint-disable-next-line no-console
-        console.log(reason);
-        this.setErrorMessage('通信に失敗しました。');
-      });
-  }
-
   render() {
     // eslint-disable-next-line no-console
     console.log(this.props);
+    // eslint-disable-next-line no-console
+    console.log(this.state);
 
     // const {
     //   address,
@@ -130,34 +99,50 @@ class SearchPage extends Component {
     //   place,
     // } = this.state;
 
-    // const { place } = this.props;
+    const { geocodeResult } = this.props;
+    // eslint-disable-next-line no-console
+    console.log(geocodeResult);
 
     return (
       <div className="search-page">
         <h1 className="app-title">ホテル検索</h1>
-        <SearchForm onSubmit={e => this.handlePlaceSubmit(e)} />
-        {/*
+        <SearchForm />
         <div className="result-area">
-          <Map location={location} />
+          <Map location={geocodeResult.location} />
           <div className="result-right">
-            <GeoCodeResult address={address} location={location} />
-            <h2>ホテル検索結果</h2>
+            <GeoCodeResult
+              address={geocodeResult.address}
+              location={geocodeResult.location}
+            />
+            {/* <h2>ホテル検索結果</h2>
             <HotelsTable
               hotels={hotels}
               sortKey={sortKey}
               onSort={key => this.handleSortKeyChange(hotels, key)}
-            />
+            /> */}
           </div>
         </div>
-        */}
       </div>
     );
   }
 }
 
 SearchPage.propTypes = {
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  // history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  geocodeResult: PropTypes.shape({
+    address: PropTypes.string.isRequired,
+    location: PropTypes.shape({
+      lat: PropTypes.number.isRequired,
+      lng: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
 };
 
-export default SearchPage;
+const mapStateToProps = state => ({
+  geocodeResult: state.geocodeResult,
+});
+
+// const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps)(SearchPage);
