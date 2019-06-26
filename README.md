@@ -53,3 +53,9 @@ https://github.com/reduxjs/react-redux
 
 yarn add -D redux-devtools
 https://github.com/reduxjs/redux-devtools
+
+yarn add redux-thunk
+https://github.com/reduxjs/redux-thunk
+
+yarn add redux-devtools-extension
+https://github.com/zalmoxisus/redux-devtools-extension
