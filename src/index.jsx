@@ -22,7 +22,6 @@ ReactDOM.render(
       history={history}
       // eslint-disable-next-line no-restricted-globals
       location={location}
-      store={createStore(reducer)}
     />
   </Provider>,
   document.querySelector('.container'),
