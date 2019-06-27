@@ -1,8 +1,20 @@
 import { geocode } from '../domain/Geocoder';
-// import { searchHotelByLocation } from '../domain/HotelRepository';
+import { searchHotelByLocation } from '../domain/HotelRepository';
 
 export const setPlace = place => (dispatch) => {
   dispatch({ type: 'CHANGE_PLACE', place });
+};
+
+export const setErrorMessage = message => (dispatch) => {
+  dispatch({ type: 'CHANGE_ERROR_MESSAGE', message });
+};
+
+export const setHotels = hotels => (dispatch) => {
+  dispatch({ type: 'CHANGE_HOTELS', hotels });
+};
+
+export const setSortKey = sortKey => (dispatch) => {
+  dispatch({ type: 'CHANGE_SORT_KEY', sortKey });
 };
 
 export const startSearch = () => (dispatch, getState) => {
@@ -11,27 +23,24 @@ export const startSearch = () => (dispatch, getState) => {
       switch (status) {
         case 'OK': {
           dispatch({ type: 'GEOCODE_FETCHED', address, location });
-          // this.setState({ address, location });
-          // return searchHotelByLocation(location);
-          break;
+          return searchHotelByLocation(location);
         }
         case 'ZERO_RESULTS': {
-        // this.setErrorMessage('結果が見つかりませんでした。');
+          dispatch(setErrorMessage('結果が見つかりませんでした。'));
           break;
         }
         default: {
-        // this.setErrorMessage('エラーが発生しました。');
+          dispatch(setErrorMessage('エラーが発生しました。'));
         }
       }
       return [];
+    })
+    .then((hotels) => {
+      dispatch(setHotels(hotels));
+    })
+    .catch((reason) => {
+    // eslint-disable-next-line no-console
+      console.log(reason);
+      dispatch(setErrorMessage('通信に失敗しました。'));
     });
-// .then((hotels) => {
-//   const { sortKey } = this.state;
-//   this.setState({ hotels: sortedHotels(hotels, sortKey) });
-// })
-// .catch((reason) => {
-//   // eslint-disable-next-line no-console
-//   console.log(reason);
-//   this.setErrorMessage('通信に失敗しました。');
-// });
 };
