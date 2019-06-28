@@ -1,4 +1,7 @@
-# udemy_react-redux
+# 【Udemy講座】最短で学ぶReactとReduxの基礎から実践まで
+動画：https://www.udemy.com/share/100dx0BkcYcFlbQXw=/
+
+動画で使用している完成版ソースコード：https://github.com/muratayusuke/udemy_react
 
 # node: v12.4.0
 
